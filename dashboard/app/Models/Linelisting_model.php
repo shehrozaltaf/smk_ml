@@ -37,8 +37,7 @@ class linelisting_model extends Model
             $query->where('colflag')
                 ->orWhere('colflag', '=', '0');
         });
-        $sql->where('cluster_no', 'NOT LIKE', '%9501');
-        $sql->where('cluster_no', 'NOT LIKE', '%9502');
+        $sql->where('cluster_no', 'NOT LIKE', '999%');
         $sql->orderBy('dist_id', 'ASC');
         $data = $sql->get();
         return $data;
@@ -48,8 +47,9 @@ class linelisting_model extends Model
     {
         $sql = DB::table('clusters as c');
         $select = "l.enumcode,c.district, l.hh01,  c.dist_id,
-			(select count(distinct deviceid) from listings where hh02 = l.hh01 and enumcode = l.enumcode  and (hh15!='1' or hh15 is null) AND (colflag is null or colflag=0 )) as collecting_tabs,
-			(select count(*) completed_tabs from(select deviceid, max(cast(hh03 as int)) ms from listings where enumcode = l.enumcode and hh02 = l.hh01  and (hh15!='1' or hh15 is null) AND (colflag is null OR colflag = 0  )  and hh04 = 9 group by deviceid) AS completed_tabs) completed_tabs";
+			(select count(distinct deviceid) from listings where hh01 = l.hh01 and enumcode = l.enumcode  and (hh11 not like 'Deleted') AND (colflag is null or colflag=0 )) as collecting_tabs,
+			(select count(*) completed_tabs from(select deviceid, max(cast(hh04 as int)) ms from listings where enumcode = l.enumcode and hh01 = l.hh01  and (hh11 not like 'Deleted') AND (colflag is null OR colflag = 0  )  and hh07 = 9 
+            group by deviceid) AS completed_tabs) completed_tabs";
 
         if (isset($searchdata['pageLevel']) && $searchdata['pageLevel'] != '' && $searchdata['pageLevel'] == '2') {
             $select .= ',c.tehsil';
@@ -79,11 +79,10 @@ class linelisting_model extends Model
                 ->orWhere('c.colflag', '=', '0');
         });
         $sql->where(function ($query) {
-            $query->where('hh15')
-                ->orWhere('hh15', '!=', '1');
+            $query->where('hh11', 'NOT LIKE', 'Deleted');
+                
         });
-        $sql->where('cluster_no', 'NOT LIKE', '%9501');
-        $sql->where('cluster_no', 'NOT LIKE', '%9502');
+        
         $sql->groupBy('c.district', 'c.dist_id', 'l.colflag', 'l.enumcode', 'l.hh01');
         $sql->orderBy('l.enumcode', 'ASC');
         $sql->orderBy('l.hh01', 'ASC');
@@ -143,8 +142,8 @@ and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
                 ->orWhere('c.colflag', '=', '0');
         });
         $sql->where('l.hh11', 'NOT LIKE', 'Deleted');
-        $sql->where('cluster_no', 'NOT LIKE', '%9501');
-        $sql->where('cluster_no', 'NOT LIKE', '%9502');
+        $sql->where('cluster_no', 'NOT LIKE', '999901');
+        $sql->where('cluster_no', 'NOT LIKE', '999902');
         $sql->groupBy('c.cluster_no', 'l.enumcode', 'l.hh01', 'c.randomized', 'c.tehsil');
         $sql->orderBy('c.cluster_no', 'ASC');
         $sql->orderBy('l.enumcode', 'ASC');
@@ -153,7 +152,7 @@ and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
         return $data;
     }
 
-    public static function get_linelisting_table2($searchdata)
+ /*   public static function get_linelisting_table2($searchdata)
     {
         $sql = DB::table('clusters as c');
         $select = "c.cluster_no,l.enumcode,l.hh02,c.randomized,c.tehsil,
@@ -212,7 +211,7 @@ and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
         $data = $sql->get();
         return $data;
     }
-
+*/
     /*============================ Systematic Randomization ============================*/
     public static function get_rand_cluster($cluster)
     {
@@ -230,7 +229,7 @@ and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
     public static function chkDuplicateTabs($cluster)
     {
         $sql = DB::table('listings');
-        $select = "COUNT ((tabNo + '-' + hh03 + '-' + hh07)) AS duplicates,(tabNo + '-' + hh03 + '-' + hh07) AS hh";
+        $select = "COUNT ((tabNosss + '-' + hh03 + '-' + hh07)) AS duplicates,(tabNo + '-' + hh03 + '-' + hh07) AS hh";
         $sql->select(DB::raw($select));
         $sql->where('hh02', '=', $cluster);
         $sql->where(function ($query) {
