@@ -38,7 +38,7 @@
             <div class="card">
                 <div class="card-header project-list">
 
-                    <h6>UEN Rapid Survey - Randomization</h6>
+                    <h6>SMK_ML - Randomization</h6>
                     <div class="mytext2">Cluster No: <strong>{{request()->id}}</strong></div>
                     <div class="mytext">District:
                         <strong>{{isset($data['get_randomized_table'][0]->district) &&$data['get_randomized_table'][0]->district!=''?ucfirst($data['get_randomized_table'][0]->district):'-'}}</strong>

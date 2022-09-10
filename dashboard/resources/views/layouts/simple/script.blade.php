@@ -40,7 +40,31 @@
 <script src="{{asset(config('global.asset_path').'/js/core.js')}}"></script>
 <script src="{{asset(config('global.asset_path').'/js/theme-customizer/customizer.js')}}"></script>
 
+<script>
+    $(document).ready(function () {
+        checkSesstion();
+    });
+    function checkSesstion() {
+        var s = 1;
+        sessionStorage.setItem("activityTime", 1);
+        $('body').on('scroll mousedown keydown', function (event) {
+            CallAjax('{{route('checkSession')}}', {}, 'POST', function (result) {
+                if (result == 2) {
+                    window.location.reload();
+                }
+            });
+            s = 1;
+            sessionStorage.setItem("activityTime", 1);
+        });
 
+        setInterval(function () {
+            sessionStorage.setItem("activityTime", s++);
+            if (sessionStorage.getItem("activityTime") >= 910) {
+                window.location.reload();
+            }
+        }, 1000);
+    }
+</script>
 
 {{-- @if(Route::current()->getName() == 'index')
 	<script src="{{asset(config('global.asset_path').'/js/layout-change.js')}}"></script>

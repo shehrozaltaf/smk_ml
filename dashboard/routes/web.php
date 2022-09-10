@@ -100,6 +100,9 @@ Route::prefix('settings')->group(function () {
 
 });
 Route::post('changePassword', 'Settings\Dashboard_Users@changePassword')->middleware(['auth'])->name('changePassword');
+
+
+Route::post('checkSession', 'Check_Session@checkSession')->name('checkSession');
 /*=====================================Layout Settings=====================================*/
 Route::get('layout-{light}', function ($light) {
     session()->put('layout', $light);

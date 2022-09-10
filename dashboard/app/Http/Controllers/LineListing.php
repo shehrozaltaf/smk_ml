@@ -307,10 +307,10 @@ class LineListing extends Controller
                             $form_data = array(
                                 'updDt' => date('Y-m-d h:i:s'),
                                 'randDT' => date('Y-m-d h:i:s'),
-                                'uid' => $get_systematic_rand[$index - 1]->uid,
+                                'uid' => $get_systematic_rand[$index - 1]->_uid,
                                 'sno' => $i + 1,
                                 'hh01' => $get_systematic_rand[$index - 1]->hh01,
-                                'hh02' => $get_systematic_rand[$index - 1]->hh02,
+                                'hh02' => $get_systematic_rand[$index - 1]->geoArea,
                                 'hh03' => $get_systematic_rand[$index - 1]->hh03,
                                 'hh04' => $get_systematic_rand[$index - 1]->hh04,
                                 'hh05' => $get_systematic_rand[$index - 1]->hh05,
@@ -326,11 +326,11 @@ class LineListing extends Controller
                                 'randomPick' => $index - 1,
                                 'quot' => $quotient,
                                 'dist_id' => $get_systematic_rand[$index - 1]->enumcode,
-                                'hhno' => $get_systematic_rand[$index - 1]->tabNo . "-" . str_pad($get_systematic_rand[$index - 1]->hh03, 4, "0", STR_PAD_LEFT) . "-" . str_pad($get_systematic_rand[$index - 1]->hh07, 3, "0", STR_PAD_LEFT),
-                                'hhss' => str_pad($get_systematic_rand[$index - 1]->hh03, 4, "0", STR_PAD_LEFT) . "-" . str_pad($get_systematic_rand[$index - 1]->hh07, 3, "0", STR_PAD_LEFT),
-                                'compid' => $get_systematic_rand[$index - 1]->hh02 . '-' . $get_systematic_rand[$index - 1]->tabNo . "-" . str_pad($get_systematic_rand[$index - 1]->hh03, 4, "0", STR_PAD_LEFT) . "-" . str_pad($get_systematic_rand[$index - 1]->hh07, 3, "0", STR_PAD_LEFT),
+                                'hhno' => $get_systematic_rand[$index - 1]->tabNo . "-" . str_pad($get_systematic_rand[$index - 1]->hh04, 4, "0", STR_PAD_LEFT) . "-" . str_pad($get_systematic_rand[$index - 1]->hh05, 3, "0", STR_PAD_LEFT),
+                                'hhss' => str_pad($get_systematic_rand[$index - 1]->hh04, 4, "0", STR_PAD_LEFT) . "-" . str_pad($get_systematic_rand[$index - 1]->hh05, 3, "0", STR_PAD_LEFT),
+                                'compid' => $get_systematic_rand[$index - 1]->hh01 . '-' . $get_systematic_rand[$index - 1]->tabNo . "-" . str_pad($get_systematic_rand[$index - 1]->hh04, 4, "0", STR_PAD_LEFT) . "-" . str_pad($get_systematic_rand[$index - 1]->hh05, 3, "0", STR_PAD_LEFT),
                                 'tabNo' => $get_systematic_rand[$index - 1]->tabNo,
-//                                'col_flag' => 0,
+                                'colflag' => 0,
                                 'user_id' => Auth::user()->id,
                                 'user_name' => Auth::user()->username,
                             );
@@ -451,7 +451,7 @@ class LineListing extends Controller
             $data['get_randomized_table'] = $get_randomized_table;
 //            return view('ll_dc.make_pdf', ['data' => $data]);
             $pdf = PDF::loadView('ll_dc.make_pdf', ['data' => $data]);
-            return $pdf->download($cluster . '_randomization_uen_rs.pdf');
+            return $pdf->download($cluster . '_randomization_smk_ml.pdf');
         } else {
             $trackarray["mainResult"] = "Error";
             $trackarray["result"] = "View Error - Access denied";
