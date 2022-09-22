@@ -136,7 +136,7 @@ class DataCollection extends Controller
     public function dataCollection_detail(Request $request)
     {
         $data = array();
-        $data['permission'] = Settings_Model::getUserRights(Auth::user()->idGroup, '', 'DataCollection');
+        $data['permission'] = Settings_Model::getUserRights(Auth::user()->idGroup, '', 'data_collection');
         /*==========Log=============*/
         $trackarray = array(
             "activityName" => "DataCollection",
@@ -290,7 +290,7 @@ class DataCollection extends Controller
     public function dataCollection_statusdetail(Request $request)
     {
         $data = array();
-        $data['permission'] = Settings_Model::getUserRights(Auth::user()->idGroup, '', 'DataCollection');
+        $data['permission'] = Settings_Model::getUserRights(Auth::user()->idGroup, '', 'data_collection');
         /*==========Log=============*/
         $trackarray = array(
             "activityName" => "DataCollection",

@@ -48,7 +48,7 @@ class linelisting_model extends Model
         $sql = DB::table('clusters as c');
         $select = "l.enumcode,c.district, l.hh01,  c.dist_id,
 			(select count(distinct deviceid) from listings where hh01 = l.hh01 and enumcode = l.enumcode  and (hh11 not like 'Deleted') AND (colflag is null or colflag=0 )) as collecting_tabs,
-			(select count(*) completed_tabs from(select deviceid, max(cast(hh04 as int)) ms from listings where enumcode = l.enumcode and hh01 = l.hh01  and (hh11 not like 'Deleted') AND (colflag is null OR colflag = 0  )  and hh07 = 9 
+			(select count(*) completed_tabs from(select deviceid, max(cast(hh04 as int)) ms from listings where enumcode = l.enumcode and hh01 = l.hh01  and (hh11 not like 'Deleted') AND (colflag is null OR colflag = 0  )  and hh07 = 9
             group by deviceid) AS completed_tabs) completed_tabs";
 
         if (isset($searchdata['pageLevel']) && $searchdata['pageLevel'] != '' && $searchdata['pageLevel'] == '2') {
@@ -80,9 +80,9 @@ class linelisting_model extends Model
         });
         $sql->where(function ($query) {
             $query->where('hh11', 'NOT LIKE', 'Deleted');
-                
+
         });
-        
+
         $sql->groupBy('c.district', 'c.dist_id', 'l.colflag', 'l.enumcode', 'l.hh01');
         $sql->orderBy('l.enumcode', 'ASC');
         $sql->orderBy('l.hh01', 'ASC');
@@ -94,31 +94,24 @@ class linelisting_model extends Model
     public static function get_linelisting_table($searchdata)
     {
         $sql = DB::table('clusters as c');
-        $select = "c.cluster_no,l.enumcode,l.hh01,c.randomized,c.tehsil,
-            (SELECT COUNT (*) FROM (SELECT DISTINCT hh04,tabNo FROM listings
-WHERE hh07 NOT IN ('8','9') AND (colflag is null or colflag=0) and (hh11 not like 'Deleted') AND hh01=l.hh01) AS structures) AS structures,
-(select DISTINCT COUNT (DISTINCT(cast(hh04 as int))) FROM listings where hh07 not in ('8','9') and (hh11 not like 'Deleted') and hh01 = l.hh01 AND (colflag is null or colflag=0)) as Total_structures,
-(select DISTINCT COUNT (hh04) FROM listings where hh08 = '1' and (hh11 not like 'Deleted') and hh01 = l.hh01 AND (colflag is null or colflag=0)) as residential_Household,
-(select DISTINCT COUNT (hh04) FROM listings where hh08 = '1' and (hh11 not like 'Deleted') and hh13='1' and hh01 = l.hh01 AND (colflag is null or colflag=0)) as eligible_households,
-(select sum(cast(hh13a as int)) from listings where hh08 = '1' and (hh11 not like 'Deleted') and hh13 = '1' and hh01 = l.hh01 AND (colflag is null or colflag=0)) as no_of_eligible_MWRA,
-(select sum(cast(hh15 as int)) from listings where hh08 = '1' and (hh11 not like 'Deleted') and hh13 = '1' and hh01 = l.hh01 AND (colflag is null or colflag=0)) as no_of_Adolescent,
-(select count(distinct deviceid) from listings where hh01 = l.hh01 and (hh11 not like 'Deleted') AND (colflag is null or colflag=0)) as collecting_tabs, 
-(select count(*) completed_tabs from(select deviceid, max(cast(hh04 as int)) ms from listings where enumcode = l.enumcode and (hh11 not like 'Deleted') and hh01 = l.hh01 AND (colflag is null OR colflag = '0')
-and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
-        $sql->select(DB::raw($select))->leftJoin('listings as l', 'c.cluster_no', '=', 'l.hh01');
 
-        if (isset($searchdata['type']) && $searchdata['type'] == 'c') {
-            $sql->whereRaw("(select count(distinct deviceid) from listings where hh01 = l.hh01 and enumcode = l.enumcode  AND (colflag is null or colflag=0 ))!=0
-             AND (select count(distinct deviceid) from listings where hh02 = l.hh01 and enumcode = l.enumcode and (hh15!='1' or hh15 is null)  AND (colflag is null or colflag=0))
-             = (select count(*) completed_tabs from(select deviceid, max(cast(hh03 as int)) ms from listings where enumcode = l.enumcode and hh02 = l.hh01 and (hh15!='1' or hh15 is null) AND (colflag is null OR colflag = '0')  and hh04 = 9 group by deviceid) AS completed_tabs)");
-        } elseif (isset($searchdata['type']) && $searchdata['type'] == 'i') {
-            $sql->whereRaw(" (select count(distinct deviceid) from listings where hh01 = l.hh01 and enumcode = l.enumcode  and (hh15!='1' or hh15 is null) AND (colflag is null or colflag=0 ))
-             != (select count(*) completed_tabs from(select deviceid, max(cast(hh03 as int)) ms from listings where enumcode = l.enumcode and hh02 = l.hh01  and (hh15!='1' or hh15 is null) AND (colflag is null OR colflag = '0')  and hh04 = 9 group by deviceid) AS completed_tabs)");
-        } elseif (isset($searchdata['type']) && $searchdata['type'] == 'r') {
-            $sql->whereRaw("(select count(distinct deviceid) from listings where hh01 = l.hh01 and enumcode = l.enumcode  and (hh15!='1' or hh15 is null) AND (colflag is null or colflag=0))=0");
-        } else {
-            $cluster_type_where = '';
-        }
+        $select = "c.cluster_no,l.enumcode,l.hh01,c.randomized,c.tehsil, (
+SELECT COUNT (*) FROM (SELECT DISTINCT hh04,tabNo FROM listings WHERE hh07 not in ('8','9') AND (colflag is null or colflag=0) and (hh11 not like 'Deleted') AND hh01=l.hh01) AS structures) AS structures,
+(select DISTINCT COUNT (hh04) FROM listings where hh08 = '1' and (hh11 not like 'Deleted') and hh01 = l.hh01 AND (colflag is null or colflag=0)) as residential_structures,
+(select DISTINCT COUNT (hh04) FROM listings where hh08 = '1' and (hh11 not like 'Deleted') and hh13='1' and hh01 = l.hh01 AND (colflag is null or colflag=0)) as eligible_households,
+(select sum(cast(hh13a as int)) from listings where hh08 = '1' and (hh11 not like 'Deleted') and hh13 = '1' and hh01 = l.hh01 AND (colflag is null or colflag=0)) as no_of_eligible_wras,
+(select sum(cast(hh15 as int)) from listings where hh08 = '1' and (hh11 not like 'Deleted') and hh13 = '1' and hh01 = l.hh01 AND (colflag is null or colflag=0)) as no_of_Adolescent,
+(select count(distinct deviceid) from listings where hh01 = l.hh01 and (hh11 not like 'Deleted') AND (colflag is null or colflag=0)) as collecting_tabs,
+(select count(*) completed_tabs from (select deviceid, max(cast(hh04 as int)) ms from listings where enumcode = l.enumcode and (hh11 not like 'Deleted') and hh01 = l.hh01 AND (colflag is null OR colflag = '0') and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
+        $sql->select(DB::raw($select))
+            ->leftJoin('listings as l', function ($join) {
+                $join->on('c.cluster_no', '=', 'l.hh01');
+                if (!isset($searchdata['type']) || $searchdata['type'] == ''|| $searchdata['type'] == 'r'|| $searchdata['type'] == 't') {
+                    $join->where('l.hh11', 'NOT LIKE', 'Deleted');
+                }
+            }) ;
+
+
 
         if (isset($searchdata['district']) && $searchdata['district'] != '') {
             $dist = $searchdata['district'];
@@ -129,7 +122,19 @@ and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
                 }
             });
         }
-
+        if (isset($searchdata['type']) && $searchdata['type'] == 'c') {
+            $sql->whereRaw("(select count(distinct deviceid) from listings where hh01 = l.hh01 and (hh11 not like 'Deleted') AND (colflag is null or colflag=0))
+             = (select count(*) completed_tabs from (select deviceid, max(cast(hh04 as int)) ms from listings where enumcode = l.enumcode and (hh11 not like 'Deleted') and hh01 = l.hh01 AND (colflag is null OR colflag = '0') and hh07 = '9' group by deviceid) AS completed_tabs)");
+            $sql->where('l.hh11', 'NOT LIKE', 'Deleted');
+        } elseif (isset($searchdata['type']) && $searchdata['type'] == 'i') {
+            $sql->whereRaw(" (select count(distinct deviceid) from listings where hh01 = l.hh01 and (hh11 not like 'Deleted') AND (colflag is null or colflag=0))
+             != (select count(*) completed_tabs from (select deviceid, max(cast(hh04 as int)) ms from listings where enumcode = l.enumcode and (hh11 not like 'Deleted') and hh01 = l.hh01 AND (colflag is null OR colflag = '0') and hh07 = '9' group by deviceid) AS completed_tabs)");
+            $sql->where('l.hh11', 'NOT LIKE', 'Deleted');
+        } elseif (isset($searchdata['type']) && $searchdata['type'] == 'r') {
+            $sql->whereRaw("(select count(distinct deviceid) from listings where hh01 = l.hh01 and (hh11 not like 'Deleted') AND (colflag is null or colflag=0))=0");
+        } else {
+            $cluster_type_where = '';
+        }
         $sql->where(function ($query) {
             $query->whereNotIn('l.username', ['dmu@aku', 'user0001', 'user0002', 'test1234', 'afg12345', 'user0113', 'user0123', 'user0211', 'user0234', 'user0252', 'user0414', 'user0432', 'user0434'])
                 ->orWhere('l.username');
@@ -142,9 +147,7 @@ and hh07 = '9' group by deviceid) AS completed_tabs) completed_tabs ";
             $query->where('c.colflag')
                 ->orWhere('c.colflag', '=', '0');
         });
-        $sql->where('l.hh11', 'NOT LIKE', 'Deleted');
-        $sql->where('cluster_no', 'NOT LIKE', '999901');
-        $sql->where('cluster_no', 'NOT LIKE', '999902');
+        $sql->where('c.dist_id', 'NOT LIKE', '999');
         $sql->groupBy('c.cluster_no', 'l.enumcode', 'l.hh01', 'c.randomized', 'c.tehsil');
         $sql->orderBy('c.cluster_no', 'ASC');
         $sql->orderBy('l.enumcode', 'ASC');

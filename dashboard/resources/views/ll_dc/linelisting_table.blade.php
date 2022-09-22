@@ -323,13 +323,14 @@
 
                                 <thead>
                                 <tr>
-                                    <th width="9%">SNo</th>
+                                    <th width="3%">SNo</th>
                                     <th width="9%">Tehsil</th>
                                     <th width="9">Cluster No</th>
                                     <th width="9%">Total Structures</th>
-                                    <th width="9%">Residential Structures</th>
+                                    <th width="9%">Residential Household</th>
                                     <th width="9%">Eligible HHs</th>
                                     <th width="9%">WRAs</th>
+                                    <th width="9%">Adolescent</th>
                                     <th width="9%">Collecting Tabs</th>
                                     <th width="9%">Completed Tabs</th>
                                     <th width="9%">Status</th>
@@ -358,6 +359,7 @@
                                             <td width="9%">{{isset($r->residential_structures) && $r->residential_structures!=''?$r->residential_structures:'0'}}</td>
                                             <td width="9%">{{isset($r->eligible_households) && $r->eligible_households!=''?$r->eligible_households:'0'}}</td>
                                             <td width="9%">{{isset($r->no_of_eligible_wras) && $r->no_of_eligible_wras!=''?$r->no_of_eligible_wras:'0'}}</td>
+                                            <td width="9%">{{isset($r->no_of_Adolescent) && $r->no_of_Adolescent!=''?$r->no_of_Adolescent:'0'}}</td>
                                             <td width="9%">{{isset($r->collecting_tabs) && $r->collecting_tabs!=''?$r->collecting_tabs:'0'}}</td>
                                             <td width="9%">{{isset($r->completed_tabs) && $r->completed_tabs!=''?$r->completed_tabs:'0'}}</td>
                                             <td width="9%">
@@ -414,13 +416,14 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th width="9%">SNo</th>
+                                    <th width="3%">SNo</th>
                                     <th width="9%">Tehsil</th>
                                     <th width="9">Cluster No</th>
                                     <th width="9%">Total Structures</th>
-                                    <th width="9%">Residential Structures</th>
+                                    <th width="9%">Residential Household</th>
                                     <th width="9%">Eligible HHs</th>
                                     <th width="9%">WRAs</th>
+                                    <th width="9%">Adolescent</th>
                                     <th width="9%">Collecting Tabs</th>
                                     <th width="9%">Completed Tabs</th>
                                     <th width="9%">Status</th>
