@@ -88,7 +88,7 @@ class datacollection_model extends Model
 //        (SELECT COUNT (DISTINCT f.hhno) FROM  forms AS f WHERE dist_id= c.dist_id AND f.cluster_code = c.cluster_no AND f.username NOT IN ('afg12345','user0001','user0113','user0123','user0211','user0234','user0252','user0414','user0432','user0434') AND c.cluster_no NOT LIKE '%9501' AND c.cluster_no NOT LIKE '%9502' AND c.cluster_no !='null') AS hh_collected";
         $sql = DB::table('clusters as c');
         $select = "c.dist_id,c.district,c.tehsil,c.cluster_no,
-(SELECT COUNT (*) FROM bl_randomised WHERE dist_id=c.dist_id AND hh02=c.cluster_no AND (bl_randomised.colflag IS NULL OR bl_randomised.colflag ='0')) AS hh_randomized,
+(SELECT COUNT (*) FROM bl_randomised WHERE dist_id=c.dist_id AND hh01=c.cluster_no AND (bl_randomised.colflag IS NULL OR bl_randomised.colflag ='0')) AS hh_randomized,
 (SELECT COUNT (DISTINCT f.hhid) FROM dbo.formhh AS f WHERE f.a105= c.dist_id AND f.a101 = c.cluster_no AND f.username NOT IN ('afg12345','user0001','user0113','user0123','user0211','user0234','user0252','user0414','user0432','user0434') AND c.cluster_no NOT LIKE '9999%' AND c.cluster_no !='null') AS hh_collected ";
 
 

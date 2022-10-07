@@ -356,9 +356,9 @@
                                             <td width="9%">{{isset($r->tehsil) && $r->tehsil!=''?$r->tehsil:'-'}}</td>
                                             <td width="9%">{{isset($cluster_no) && $cluster_no!=''?$cluster_no:'-'}}</td>
                                             <td width="9%">{{isset($r->structures) && $r->structures!=''?$r->structures:'0'}}</td>
-                                            <td width="9%">{{isset($r->residential_structures) && $r->residential_structures!=''?$r->residential_structures:'0'}}</td>
+                                            <td width="9%">{{isset($r->residential_Household) && $r->residential_Household!=''?$r->residential_Household:'0'}}</td>
                                             <td width="9%">{{isset($r->eligible_households) && $r->eligible_households!=''?$r->eligible_households:'0'}}</td>
-                                            <td width="9%">{{isset($r->no_of_eligible_wras) && $r->no_of_eligible_wras!=''?$r->no_of_eligible_wras:'0'}}</td>
+                                            <td width="9%">{{isset($r->no_of_eligible_MWRA) && $r->no_of_eligible_MWRA!=''?$r->no_of_eligible_MWRA:'0'}}</td>
                                             <td width="9%">{{isset($r->no_of_Adolescent) && $r->no_of_Adolescent!=''?$r->no_of_Adolescent:'0'}}</td>
                                             <td width="9%">{{isset($r->collecting_tabs) && $r->collecting_tabs!=''?$r->collecting_tabs:'0'}}</td>
                                             <td width="9%">{{isset($r->completed_tabs) && $r->completed_tabs!=''?$r->completed_tabs:'0'}}</td>
